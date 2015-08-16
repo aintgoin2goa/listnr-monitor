@@ -1,0 +1,40 @@
+{
+  "name": "listnr-monitor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aintgoin2goa/listnr-monitor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aintgoin2goa/listnr-monitor/issues"
+  },
+  "homepage": "https://github.com/aintgoin2goa/listnr-monitor",
+  "devDependencies": {
+    "babel": "^5.8.21",
+    "babelify": "^6.1.3",
+    "browserify": "^11.0.1",
+    "chai": "^3.2.0",
+    "debowerify": "^1.3.1",
+    "fetch-mock": "^1.5.2",
+    "mocha": "^2.2.5",
+    "mockery": "^1.4.0",
+    "node-sass": "^3.2.0",
+    "sinon": "^1.15.4",
+    "static-server": "^2.0.0"
+  },
+  "dependencies": {
+    "es6-promise": "^3.0.2",
+    "events": "^1.0.2",
+    "guid": "0.0.12",
+    "peerjs": "peers/peerjs.git#0.3.14",
+    "react": "^0.13.3",
+    "whatwg-fetch": "^0.9.0"
+  }
+}

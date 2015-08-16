@@ -1,0 +1,42 @@
+@include keyframes(blinkRed){
+  from { background-color: #F00; }
+  50% { background-color: #A00; box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;}
+  to { background-color: #F00; }
+}
+
+@include keyframes(blinkYellow){
+  from { background-color: #FF0; }
+  50% { background-color: #AA0; box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #808002 0 -1px 9px, #FF0 0 2px 0; }
+  to { background-color: #FF0; }
+}
+
+.activity {
+  height: 30px;
+  width: 30px;
+  position: fixed;
+  left: 10px;
+  bottom: 10px;
+  border-radius: 50%;
+
+  &[data-state="error"] {
+	background-color: #F00;
+	box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 12px;
+  }
+
+  &[data-state="disconnected"] {
+	background-color: #F00;
+	box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 12px;
+	@include animation(blinkRed 1s infinite);
+  }
+
+  &[data-state="connecting"] {
+	box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #808002 0 -1px 9px, #FF0 0 2px 12px;
+	@include animation(blinkYellow 1s infinite);
+  }
+
+  &[data-state="connected"] {
+	background-color: #ABFF00;
+	box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #304701 0 -1px 9px, #89FF00 0 2px 12px;
+
+  }
+}
