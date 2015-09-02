@@ -32,32 +32,41 @@ function getCurrentState(){
 	return currentState;
 }
 
+function pollConnection(call){
+	setInterval(function(){
+		if(call.open){
+			updateCurrentState(connectionStates.CONNECTED);
+		}else{
+			updateCurrentState(connectionStates.NOT_CONNECTED)
+		}
+	}, 500);
+}
+
 function connect(){
 	var generatedGuid = guid();
 	var peer = new Peer(generatedGuid, {key: '1uyi3xryfsqncdi'});
+	navigator.getUserMedia({audio:true, video:false}, function(stream){
+		peer.on('connection', function(con){
+			console.log('received connection request');
+			if(currentState === connectionStates.CONNECTED){
+				console.log('already connectected.  Bailing...');
+				return;
+			}
+
+			let call = peer.call(con.peer, stream);
+			pollConnection(call);
+		});
+	}, function(err){
+		console.error(err);
+		updateCurrentState(connectionStates.ERROR);
+	});
+
 	peer.on('open', function(){
 		console.log('open');
 		updateCurrentState(connectionStates.NO_RECEIVER);
 		eventEmitter.emit(events.CONNECTION, {guid:generatedGuid});
 	});
-	peer.on('connection', function(con){
-		console.log('received connection request');
-		if(currentState === connectionStates.CONNECTED){
-			console.log('already connectected.  Bailing...');
-			return;
-		}
 
-		getUserMedia({audio:true, video:false}, function(stream){
-			let call = peer.call(con.peer, stream);
-			call.on('stream', function(){
-				updateCurrentState(connectionStates.CONNECTED);
-				console.log('Connected to peer');
-			}, function(err){
-				console.error(err);
-				currentState = connectionStates.ERROR;
-			});
-		});
-	});
 	peer.on('error', function(err){
 		console.error(err);
 		if(err.type == 'network'){
@@ -65,12 +74,20 @@ function connect(){
 		}else{
 			updateCurrentState(connectionStates.ERROR);
 		}
-	})
+	});
+
+	peer.on('close', function(){
+		updateCurrentState(connectionStates.NOT_CONNECTED);
+	});
+
+	window.addEventListener('beforeunload', function(){
+		peer.destroy();
+	});
 }
 
 module.exports = {
 	init : () => {
-		connect()
+		connect();
 	},
 	onStateChange : (func) => eventEmitter.on(events.STATE_CHANGE, func),
 	onConnection : (func) => eventEmitter.on(events.CONNECTION, func),

@@ -15,7 +15,6 @@ const GuidDisplay = React.createClass({
 	},
 
 	render : function(){
-		console.log('render', this.state);
 		return (
 			<p className="guid">{this.state.guid}</p>
 		);

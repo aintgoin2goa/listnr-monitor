@@ -21,4 +21,4 @@ run:
 	./node_modules/.bin/static-server -p 1981
 
 deploy:
-	# empty target
+	node ./scripts/deploy.js
